@@ -124,12 +124,12 @@ async def main():
     await detect_new()
     await config['session'].close()
 
-def schedule():
+def job():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
 
 if __name__ == '__main__':
-    schedule.every(5).minutes.do(schedule)
+    schedule.every(5).minutes.do(job)
     while True:
         schedule.run_pending()
         time.sleep(1)
