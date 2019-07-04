@@ -6,6 +6,9 @@ from lxml import html
 from db import db
 from click import secho
 from telegram_api import TelegramApi
+import schedule
+import time
+import random
 
 
 config = yaml.load(open('config.yml'))
@@ -29,7 +32,7 @@ async def fetch(url):
 
 
 async def parse_page():
-    url = 'https://bitcointalk.org/index.php?board=159.0'
+    url = random.choice(['https://bitcointalk.org/index.php?board=6.0','https://bitcointalk.org/index.php?board=5.0','https://bitcointalk.org/index.php?board=12.0'])
     print(f'parsing page: {url}')
     data = await fetch(url)
     h = html.fromstring(data)
@@ -121,7 +124,12 @@ async def main():
     await detect_new()
     await config['session'].close()
 
-
-if __name__ == '__main__':
+def schedule():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
+
+if __name__ == '__main__':
+    schedule.every(5).minutes.do(schedule)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)

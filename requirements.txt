@@ -7,3 +7,4 @@ click
 ujson
 pyyaml
 requests
+schedule
